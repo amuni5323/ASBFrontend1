@@ -14,7 +14,7 @@ const Deletebooks = () => {
             return;
         }
 
-        axios.delete(`https://as-backend1-ry1i.vercel.app/books/${id}`)
+        axios.delete(`https://backend-book-499o.onrender.com/books/${id}`)
             .then(() => {
                 alert('Book deleted successfully');
                 navigate('/home');

@@ -11,7 +11,7 @@ const EditBook = () => {
     const { id } = useParams();
 
 useEffect(() =>{
-    axios.get(`https://as-backend1-ry1i.vercel.app/books/${id}`)
+    axios.get(`https://backend-book-499o.onrender.com/books/${id}`)
     .then((response) =>{
         setAuthor(response.data.author);
         setPublishYear(response.data.publishYear);
@@ -28,7 +28,7 @@ const handleEditBook =()=>{
         author,
         publishYear
     };
-    axios.put(`https://as-backend1-ry1i.vercel.app/books/${id}`, data)
+    axios.put(`https://backend-book-499o.onrender.com/books/${id}`, data)
     .then(() =>{
         navigate('/home');
     }).catch((error) =>{

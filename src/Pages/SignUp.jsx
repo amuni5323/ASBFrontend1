@@ -12,7 +12,7 @@ const SignUp = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const handleSignUp = () => {
-        axios.post('https://as-backend1-ry1i.vercel.app/user/signup', { username, email, password })
+        axios.post('https://backend-book-499o.onrender.com/user/signup', { username, email, password })
             .then(() => {
                 enqueueSnackbar('Sign Up successful', { variant: 'success' });
                 navigate('/');
