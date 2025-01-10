@@ -25,7 +25,7 @@ const CreateBooks = () => {
         }
       };
     const handleSavebook = () => {
-        if (!title || !author || !publishYear || !image) {
+        if (!title || !author || !publishYear || !base64) {
             enqueueSnackbar("All fields are required", { variant: "error" });
             return;
         }
