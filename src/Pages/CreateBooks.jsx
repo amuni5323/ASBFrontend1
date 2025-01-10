@@ -66,8 +66,7 @@ const CreateBooks = () => {
             <h1 className="my-4">Create Books</h1>
             <div className="p-4">
                 <div>
-            <input type="file" accept="image/*" onChange={handleFileUp} />
-      <button onClick={handleSubmit}>Upload</button>
+          
     </div>
                 <div className="my-4">
                     <label className="mx-4">Title</label>
@@ -100,6 +99,7 @@ const CreateBooks = () => {
                     <label className="text-xl mr-4 text-gray-500">Image</label>
                     <input
                         type="file"
+                        accept="image/*"
                         onChange={handleFileUpload}
                         className="border-2 border-gray-500 px-4 py-2 w-full"
                     />
