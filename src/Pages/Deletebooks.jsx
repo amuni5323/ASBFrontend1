@@ -2,11 +2,11 @@ import React from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import Backbutton from "../Components/Home/Backbutton";
 import axios from 'axios';
-const usernameLocal = localStorage.getItem('token');
+
 const Deletebooks = () => {
     const navigate = useNavigate();
     const { id } = useParams();
-
+    const usernameLocal = localStorage.getItem('token');
     const handleDeleteBook = () => {
         if (!id) {
             alert('Book ID is missing. Unable to delete.');

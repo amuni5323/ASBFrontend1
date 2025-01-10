@@ -2,14 +2,14 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import Backbutton from "../Components/Home/Backbutton"
-const usernameLocal = localStorage.getItem('token');
+
 const EditBook = () => {
     const [title, setTitle] = useState('');
     const [author , setAuthor] = useState('');
     const [publishYear, setPublishYear] = useState('');
     const navigate = useNavigate();
     const { id } = useParams();
-
+    const usernameLocal = localStorage.getItem('token');
 useEffect(() =>{
     axios.get(`https://backend-book-499o.onrender.com/books/${id}`)
     .then((response) =>{
