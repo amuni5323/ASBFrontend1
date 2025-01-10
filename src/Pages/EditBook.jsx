@@ -28,7 +28,16 @@ const handleEditBook =()=>{
         author,
         publishYear
     };
-    axios.put(`https://backend-book-499o.onrender.com/books/${id}`, data)
+    axios.put(`https://backend-book-499o.onrender.com/books/${id}`, data,
+{
+    headers: {
+        'Authorization': `Bearer ${usernameLocal}`
+    }
+}
+    )
+
+    
+
     .then(() =>{
         navigate('/home');
     }).catch((error) =>{

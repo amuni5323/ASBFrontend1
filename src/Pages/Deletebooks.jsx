@@ -14,7 +14,13 @@ const Deletebooks = () => {
             return;
         }
 
-        axios.delete(`https://backend-book-499o.onrender.com/books/${id}`)
+        axios.delete(`https://backend-book-499o.onrender.com/books/${id}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${usernameLocal}`
+                }
+            }
+        )
             .then(() => {
                 alert('Book deleted successfully');
                 navigate('/home');
