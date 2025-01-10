@@ -25,7 +25,7 @@ const Home = () => {
         }
     
     useEffect(()=>{
-        axios.get('https://backend-book-499o.onrender.com/books',{
+        axios.get('https://backend-book-499o.onrender.com/books/books',{
             headers: {
                 'Authorization': `Bearer ${usernameLocal}`
             }
