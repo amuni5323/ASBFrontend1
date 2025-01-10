@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Backbutton from "../Components/Home/Backbutton";
 
 const CreateBooks = () => {
+    const [base64, setBase64] = useState("");
+
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [publishYear, setPublishYear] = useState('');
@@ -12,18 +14,29 @@ const CreateBooks = () => {
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const usernameLocal = localStorage.getItem('token');
-
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setBase64(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
     const handleSavebook = () => {
         if (!title || !author || !publishYear || !image) {
             enqueueSnackbar("All fields are required", { variant: "error" });
             return;
         }
 
+      
+
         const formData = new FormData();
         formData.append('title', title);
         formData.append('author', author);
         formData.append('publishYear', publishYear);
-        formData.append('image', image);
+        formData.append('image', base64);
       
 
         axios
@@ -43,11 +56,19 @@ const CreateBooks = () => {
             });
     };
 
+
+
+
     return (
         <div className="p-4">
+
             <Backbutton />
             <h1 className="my-4">Create Books</h1>
             <div className="p-4">
+                <div>
+            <input type="file" accept="image/*" onChange={handleFileUp} />
+      <button onClick={handleSubmit}>Upload</button>
+    </div>
                 <div className="my-4">
                     <label className="mx-4">Title</label>
                     <input
@@ -79,7 +100,7 @@ const CreateBooks = () => {
                     <label className="text-xl mr-4 text-gray-500">Image</label>
                     <input
                         type="file"
-                        onChange={(e) => setImage(e.target.files[0])}
+                        onChange={handleFileUpload}
                         className="border-2 border-gray-500 px-4 py-2 w-full"
                     />
                 </div>
