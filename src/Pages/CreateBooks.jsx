@@ -38,6 +38,7 @@ const CreateBooks = () => {
         formData.append('publishYear', publishYear);
         formData.append('image', base64);
       
+        console.log("form data ",formData)
 
         axios
             .post('https://backend-book-499o.onrender.com/books', formData, {
