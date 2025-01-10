@@ -5,7 +5,7 @@ import Backbutton from '../Components/Home/Backbutton'
 const ShowBook = () => {
     const [book, setBook] = useState({});
     const{id} = useParams();
-
+    const usernameLocal = localStorage.getItem('token');
     useEffect(() =>{
         if(id){
         axios
