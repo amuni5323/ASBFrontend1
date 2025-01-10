@@ -9,7 +9,15 @@ const ShowBook = () => {
     useEffect(() =>{
         if(id){
         axios
-        .get(`https://backend-book-499o.onrender.com/books/${id}`)
+        .get(`https://backend-book-499o.onrender.com/books/${id}`,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                        'Authorization': `Bearer ${usernameLocal}`
+                },
+            }
+            
+        )
         .then((response) =>{
             setBook(response.data);
             console.log(book);
