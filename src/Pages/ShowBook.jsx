@@ -12,7 +12,8 @@ const ShowBook = () => {
         .get(`https://backend-book-499o.onrender.com/books/${id}`,
             {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    // 'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                         'Authorization': `Bearer ${usernameLocal}`
                 },
             }
@@ -25,7 +26,10 @@ const ShowBook = () => {
         .catch((error) =>{
             console.log(error);
         });
-}}, [])
+}}, [id]),
+useEffect(() => {
+    console.log(book);  // To see the updated book object after state change
+}, [book]); 
   return (
     <div className='p-4'>
         <Backbutton/>
@@ -33,7 +37,7 @@ const ShowBook = () => {
         <div className='border border-2 rounded-xl p-4'>
             {book.image &&(
                 <div className='w-1/3 pr-4'>
-                    <img src={book.image}  alt={book.title} />
+                    <img src={book.image}  alt={book.title} className="w-full" />
                 </div>
             )}
 <div className='my-4'>

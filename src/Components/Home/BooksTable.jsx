@@ -7,6 +7,10 @@ import { MdOutlineDelete } from "react-icons/md"
 
 
 const BooksTable = ({books}) => {
+  if (!books || books.length === 0) {
+    return <p>No books available.</p>;
+}
+
   return (
     <table className=" table table-striped text-center">
         <thead>
