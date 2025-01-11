@@ -36,7 +36,7 @@ const CreateBooks = () => {
 
     try {
       const response = await axios.post(
-        'https://backend-book-499o.onrender.com/book',
+        'https://backend-book-499o.onrender.com/books',
         {
           title,
           author,
