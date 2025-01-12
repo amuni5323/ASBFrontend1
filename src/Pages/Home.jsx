@@ -5,16 +5,13 @@ import { MdOutlineAddBox } from 'react-icons/md';
 import { Link, useNavigate } from "react-router-dom";
 import BooksTable from "../Components/Home/BooksTable";
 
-
 const Home = () => {
-
     const [books, setBooks] = useState([]);
     const navigate = useNavigate();
-    const usernameLocal = localStorage.getItem('token');
-    console.log("token ", usernameLocal)
+    const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
 
-    if (usernameLocal == null) {
+    if (!token) {
         navigate('/');
     }
 
@@ -22,45 +19,44 @@ const Home = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         navigate('/');
-    }
+    };
 
     useEffect(() => {
-         if (!usernameLocal) return; 
+        if (!token) return;
         axios.get('https://backend-book-499o.onrender.com/books', {
             headers: {
-                'Authorization': `Bearer ${usernameLocal}`
+                'Authorization': `Bearer ${token}`
             }
-        }).then((Response) => {
-            console.log("Fetched Books:", Response.data.data);
-            setBooks(Response.data.data);
+        }).then((response) => {
+            console.log("Fetched Books:", response.data.data);
+            setBooks(response.data.data);
         }).catch((error) => {
-            console.log(error);
+            if (error.response?.status === 401) {
+                console.log("Unauthorized access, logging out...");
+                handleLogOut();
+            } else {
+                console.error("Error fetching books:", error.message);
+            }
         });
-    }, [usernameLocal]); // Re-run effect when usernameLocal changes
+    }, [token]);
 
-    
-    // Function to add a new book and update the state
     const handleNewBook = (newBook) => {
-        setBooks(prevBooks => [...prevBooks, newBook]); // Add the new book to the list
-    }
+        setBooks(prevBooks => [...prevBooks, newBook]);
+    };
 
     return (
         <div className='container p-4'>
-            <div className='flex justify-between items-center'>
-                <h1 className='lead display-4 mt-5'> Books List</h1>
+            <div className='d-flex justify-content-between align-items-center'>
+                <h1 className='lead display-4 mt-5'>Books List</h1>
                 <Link to='/books/create'>
                     <MdOutlineAddBox className='display-5' />
                 </Link>
-
-                {/* <CiSquarePlus className='display-5' /> */}
-                <span className="mx-2">Welcome, {username} !</span>
-                <button className="btn btn-primary my-3"
-                    onClick={handleLogOut}>Logout</button>
+                <span className="mx-2">Welcome, {username}!</span>
+                <button className="btn btn-primary my-3" onClick={handleLogOut}>Logout</button>
             </div>
-
             <BooksTable books={books} handleNewBook={handleNewBook} />
         </div>
-    )
-}
+    );
+};
 
 export default Home;
