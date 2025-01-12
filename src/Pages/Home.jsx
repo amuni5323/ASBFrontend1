@@ -25,13 +25,13 @@ const Home = () => {
     }
 
     useEffect(() => {
-        if (!usernameLocal) return; 
+         if (!usernameLocal) return; 
         axios.get('https://backend-book-499o.onrender.com/books', {
             headers: {
                 'Authorization': `Bearer ${usernameLocal}`
             }
         }).then((Response) => {
-            // console.log("Fetched Books:", Response.data.data);
+            console.log("Fetched Books:", Response.data.data);
             setBooks(Response.data.data);
         }).catch((error) => {
             console.log(error);
