@@ -36,7 +36,7 @@ const Home = () => {
         }).catch((error) => {
             console.log(error);
         });
-    }, [usernameLocal]); // Re-run effect when usernameLocal changes
+    }, []); // Re-run effect when usernameLocal changes
 
     
     // Function to add a new book and update the state
