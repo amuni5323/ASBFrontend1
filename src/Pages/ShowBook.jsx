@@ -12,8 +12,8 @@ const ShowBook = () => {
         .get(`https://backend-book-499o.onrender.com/books/${id}`,
             {
                 headers: {
-                    // 'Content-Type': 'multipart/form-data',
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                
                         'Authorization': `Bearer ${usernameLocal}`
                 },
             }
