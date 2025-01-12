@@ -31,12 +31,12 @@ const Home = () => {
                 'Authorization': `Bearer ${usernameLocal}`
             }
         }).then((Response) => {
-            console.log("Fetched Books:", Response.data.data);
+            // console.log("Fetched Books:", Response.data.data);
             setBooks(Response.data.data);
         }).catch((error) => {
             console.log(error);
         });
-    }, []); // Re-run effect when usernameLocal changes
+    }, [usernameLocal]); // Re-run effect when usernameLocal changes
 
     
     // Function to add a new book and update the state
