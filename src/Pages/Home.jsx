@@ -31,7 +31,7 @@ const Home = () => {
                 'Authorization': `Bearer ${usernameLocal}`
             }
         }).then((Response) => {
-            // console.log("Fetched Books:", Response.data.data);
+            console.log("Fetched Books:", Response.data.data);
             setBooks(Response.data.data);
         }).catch((error) => {
             console.log(error);
