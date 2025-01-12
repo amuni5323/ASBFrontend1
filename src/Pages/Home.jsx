@@ -34,24 +34,9 @@ const Home = () => {
     });
   }, [usernameLocal]);
 
-<<<<<<< HEAD
   const handleNewBook = (newBook) => {
     setBooks(prevBooks => [...prevBooks, newBook]);
   };
-=======
-    useEffect(() => {
-        axios.get('https://backend-book-499o.onrender.com/books', {
-            headers: {
-                'Authorization': `Bearer ${usernameLocal}`
-            }
-        }).then((Response) => {
-            // console.log("Fetched Books:", Response.data.data);
-            setBooks(Response.data.data);
-        }).catch((error) => {
-            console.log(error);
-        });
-    }, [usernameLocal]); // Re-run effect when usernameLocal changes
->>>>>>> a8b6eba5edc4fec027adaa97d6cb259ff625da43
 
   return (
     <div className='container p-4'>
