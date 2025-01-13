@@ -11,7 +11,7 @@ const EditBook = () => {
     const { id } = useParams();
     const usernameLocal = localStorage.getItem('token');
 useEffect(() =>{
-    axios.get(`https://backend-book-499o.onrender.com/books/${id}`, data, 
+    axios.get(`https://backend-book-499o.onrender.com/books/${id}`, 
         {
             headers: {
                 'Authorization': `Bearer ${usernameLocal}`
@@ -27,7 +27,7 @@ useEffect(() =>{
         alert('An error happened. Please check console')
         console.log(error);
     })
-}, [])
+}, [id])
 
 const handleEditBook =()=>{
     const data={
