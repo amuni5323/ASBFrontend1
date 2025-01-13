@@ -1,53 +1,77 @@
-import axios from 'axios'
-import { useSnackbar } from 'notistack'
-import { useState } from 'react'
-import { Link, useNavigate } from "react-router-dom"
+import bcrypt from 'bcryptjs';
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import { User } from '../Models/UserModels.js';
 
+const router = express.Router();
 
+// Route for user signup
+router.post('/SignUp', async (request, response) => {
+    try {
+        const { username, email, password } = request.body;
 
-const Login = () => {
-    const [ username, setUsername] = useState('');
-    const [ password, setPassword] = useState('');
+        // Validate input
+        if (!username || !email || !password) {
+            return response.status(400).json({ message: 'All fields are required' });
+        }
 
-    const navigate = useNavigate();
-    const {enqueueSnackbar} = useSnackbar();
-    
-    const handleLogin = () =>{
-        axios.post('https://backend-book-499o.onrender.com/user/Login', {username, password})
-        .then(Response =>{
-        const{username} = Response.data;
-        console.log('username:', username);
-        localStorage.setItem('username', Response.data.username);
-        localStorage.setItem('token', Response.data.token);
-        enqueueSnackbar('Login successful', {variant: 'success'});
-        navigate("/home")
-  
-     } )}
-  return (
-<div className='p-4'>
-    <h1 className='mx-4 my-4'>Login</h1>
-    <div className='p-4'>
-        <div className='my-4'>
-            <label className='mx-3 mr-4'>Username</label>
-            <input type="text" value={username}
-            onChange={e => setUsername(e.target.value)} 
-            className='px-4 py-2'/>
-        </div>
-        <div className='my-4'>
-            <label className='mx-3 mr-4'>Password</label>
-            <input type="password" value={password}
-            onChange={e => setPassword(e.target.value)} 
-            className='px-4 py-2'/>
-        </div>
-        <button className='btn btn-primary mx-4 my-2 p-2' style={{width:300}} 
-    onClick={handleLogin}>Login</button>
-    <div>
-        <p className='mx-4'>Don't have an account? <Link to='/signup'>Sign Up</Link></p>
-    </div>
-    </div>
-</div>
-  )
-}
+        // Check if the username or email is already registered
+        const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+        if (existingUser) {
+            return response.status(400).json({ message: 'Username or email already exists' });
+        }
 
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-export default Login
+        // Create a new user
+        const newUser = await User.create({
+            username,
+            email,
+            password: hashedPassword,
+        });
+
+        return response.status(201).json({ message: 'User created successfully', user: newUser });
+    } catch (error) {
+        console.error('Error during signup:', error);
+        response.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Route for user login
+router.post('/login', async (request, response) => {
+    try {
+        const { username, password } = request.body;
+
+        // Validate input
+        if (!username || !password) {
+            return response.status(400).json({ message: 'Username and password are required' });
+        }
+
+        // Find the user by username
+        const user = await User.findOne({ username });
+        if (!user) {
+            return response.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the password is correct
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            return response.status(401).json({ message: 'Invalid password' });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { userid: user._id, isLogged: true },
+            process.env.JWT_SECRET || 'default_secret_key',
+            { expiresIn: '1h' }
+        );
+
+        return response.status(200).json({ message: 'Login successful', token, username: user.username });
+    } catch (error) {
+        console.error('Error during login:', error);
+        response.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+export default router;
