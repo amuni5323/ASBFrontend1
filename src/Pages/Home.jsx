@@ -17,6 +17,7 @@ const Home = () => {
     if (usernameLocal == null) {
         navigate('/');
     }
+    console.log(usernameLocal);
 
     const handleLogOut = () => {
         localStorage.removeItem('token');
@@ -31,7 +32,7 @@ const Home = () => {
                 'Authorization': `Bearer ${usernameLocal}`
             }
         }).then((Response) => {
-            console.log("Fetched Books:", Response.data.data);
+            console.log("Fetched Books:", Response);
             setBooks(Response.data.data);
         }).catch((error) => {
             console.log(error);

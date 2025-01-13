@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Backbutton from "../Components/Home/Backbutton";
 
 const CreateBooks = () => {
-  const [base64, setBase64] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [publishYear, setPublishYear] = useState('');
@@ -16,42 +16,54 @@ const CreateBooks = () => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-        if (file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setBase64(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }else {
+      if (file.type.startsWith("image/")) {
+        setImageFile(file);
+      } else {
         enqueueSnackbar("Please upload a valid image file", { variant: "error" });
       }
     }
   };
 
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "aminamohammedbrhan"); // Replace with your Cloudinary upload preset
+
+    try {
+      const response = await axios.post("https://api.cloudinary.com/v1_1/dvdgstsie/image/upload", formData);
+      return response.data.secure_url; // Return the URL of the uploaded image
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary:", error);
+      enqueueSnackbar("Failed to upload image", { variant: "error" });
+      throw error;
+    }
+  };
+
   const handleSaveBook = async () => {
-    if (!title || !author || !publishYear || !base64) {
+    if (!title || !author || !publishYear || !imageFile) {
       enqueueSnackbar("All fields are required", { variant: "error" });
       return;
     }
 
     try {
+      const imageUrl = await uploadToCloudinary(imageFile);
+
       const response = await axios.post(
         'https://backend-book-499o.onrender.com/books',
         {
           title,
           author,
           publishYear,
-          image: base64, // Pass Base64 string
+          image: imageUrl, // Use Cloudinary image URL
         },
         {
           headers: {
-           'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${usernameLocal}`,
           },
         }
       );
       enqueueSnackbar("Book created successfully", { variant: "success" });
-      
+
       navigate('/home');
     } catch (error) {
       console.error("Error creating book:", error.response || error);
@@ -100,7 +112,7 @@ const CreateBooks = () => {
             className="border-2 border-gray-500 px-4 py-2 w-full"
           />
         </div>
-        <button className="btn btn-primary btn-lg" onClick={handleSaveBook}  disabled={!title || !author || !publishYear || !base64}>
+        <button className="btn btn-primary btn-lg" onClick={handleSaveBook}  disabled={!title || !author || !publishYear || !imageFile}>
           Save
         </button>
       </div>

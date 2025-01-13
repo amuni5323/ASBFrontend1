@@ -16,6 +16,7 @@ const Login = () => {
         axios.post('https://backend-book-499o.onrender.com/user/Login', {username, password})
         .then(Response =>{
         const{username} = Response.data;
+        console.log("response",Response)
         console.log('username:', username);
         localStorage.setItem('username', Response.data.username);
         localStorage.setItem('token', Response.data.token);
