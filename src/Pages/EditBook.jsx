@@ -11,7 +11,7 @@ const EditBook = () => {
     const { id } = useParams();
     const usernameLocal = localStorage.getItem('token');
 useEffect(() =>{
-    axios.get(`https://backend-book-499o.onrender.com/books/${id}`,
+    axios.get(`https://backend-book-499o.onrender.com/books/${id}`, data, 
         {
             headers: {
                 'Authorization': `Bearer ${usernameLocal}`
