@@ -13,7 +13,7 @@ const Login = () => {
     const {enqueueSnackbar} = useSnackbar();
     
     const handleLogin = () =>{
-        axios.post('https://backend-book-499o.onrender.com/user/Login', {username, password})
+        axios.post('http://localhost:5555/user/Login', {username, password})
         .then(Response =>{
         const{username} = Response.data;
         console.log("response",Response)
@@ -23,7 +23,24 @@ const Login = () => {
         enqueueSnackbar('Login successful', {variant: 'success'});
         navigate("/home")
   
-     } )}
+     } )
+     .catch(error => {
+            if (error.response && error.response.data) {
+                // Check if the error is the email confirmation message
+                if (error.response.data.message === 'Please confirm your email before logging in') {
+                    enqueueSnackbar('Please confirm your email before logging in', { variant: 'warning' });
+                } else if (error.response.data.message === 'Email confirmed successfully!') {
+                    // Display success message if email was confirmed successfully
+                    enqueueSnackbar('Email confirmed successfully! Please log in.', { variant: 'success' });
+                } else {
+                    enqueueSnackbar(error.response.data.message || 'An error occurred', { variant: 'error' });
+                }
+            } else {
+                enqueueSnackbar('An error occurred, please try again', { variant: 'error' });
+            }
+        });
+    };
+
   return (
 <div className='p-4'>
     <h1 className='mx-4 my-4'>Login</h1>
@@ -47,8 +64,7 @@ const Login = () => {
     </div>
     </div>
 </div>
-  )
-}
+  ) }
 
 
 export default Login

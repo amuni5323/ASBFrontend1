@@ -12,9 +12,19 @@ const SignUp = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const handleSignUp = () => {
-        axios.post('https://backend-book-499o.onrender.com/user/signup', { username, email, password })
+
+        if (!username || !email || !password) {
+            enqueueSnackbar('All fields are required', { variant: 'warning' });
+            return;
+        }
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            enqueueSnackbar('Invalid email format', { variant: 'warning' });
+            return;
+        }
+
+        axios.post('http://localhost:5555/user/signup', { username, email, password })
             .then(() => {
-                enqueueSnackbar('Sign Up successful', { variant: 'success' });
+                enqueueSnackbar('Sign Up successful! Please check your email to verify your account.', { variant: 'success' });
                 navigate('/');
             })
             .catch((error) => {
