@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { useNavigate, Link } from "react-router-dom"
-import { useSnackbar } from 'notistack'
+import axios from 'axios';
+import { useSnackbar } from 'notistack';
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -22,7 +22,7 @@ const SignUp = () => {
             return;
         }
 
-        axios.post('http://localhost:5555/user/signup', { username, email, password })
+        axios.post('https://backend-book-499o.onrender.com/user/signup', { username, email, password })
             .then(() => {
                 enqueueSnackbar('Sign Up successful! Please check your email to verify your account.', { variant: 'success' });
                 navigate('/');
